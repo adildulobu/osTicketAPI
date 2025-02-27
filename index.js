@@ -1,12 +1,12 @@
+// api/index.js
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const axios = require("axios");
 const twilio = require("twilio");
-const https = require("https"); // Módulo nativo para HTTPS
+const https = require("https");
 
 const app = express();
-const port = 3000;
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -21,7 +21,7 @@ const twilioClient = twilio(
 // Configurar Axios para ignorar certificados autoassinados
 const axiosInstance = axios.create({
     httpsAgent: new https.Agent({
-        rejectUnauthorized: false // Ignora certificados inválidos
+        rejectUnauthorized: false
     })
 });
 
@@ -60,17 +60,14 @@ app.post("/whatsapp", async (req, res) => {
             to: From
         });
 
-        res.sendStatus(200);
+        res.status(200).send("OK");
     } catch (error) {
         console.error(
             "Erro ao criar ticket:",
             error.response ? error.response.data : error.message
         );
-        res.sendStatus(500);
+        res.status(500).send("Erro interno");
     }
 });
 
-// Iniciar servidor
-app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port}`);
-});
+module.exports = app;
