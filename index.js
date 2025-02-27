@@ -66,7 +66,7 @@ app.post("/whatsapp", async (req, res) => {
             "Erro ao criar ticket:",
             error.response ? error.response.data : error.message
         );
-        res.status(500).send("Erro interno", error);
+        res.status(500).send("Erro interno", error.message);
     }
 });
 
